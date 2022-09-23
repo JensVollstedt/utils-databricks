@@ -71,5 +71,5 @@ def _verify_dataset_config(dataset_config: dict):
 
 def is_executed_by_adf(dbutils):
     """Checks whether notebook is executed by ADF"""
-    is_ran_manually_from_databricks = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().endswith("@energinet.dk")
+    is_ran_manually_from_databricks = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get().endswith("@inspari.dk")
     return not is_ran_manually_from_databricks
