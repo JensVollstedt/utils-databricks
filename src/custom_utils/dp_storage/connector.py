@@ -64,6 +64,8 @@ def _do_mount(dbutils, storage_account: str, container: str) -> str:
     mount_config = _get_mount_config(dbutils)
     mount_point = get_mount_point_name(storage_account, container)
 
+    print (f"Name of mnt{mount_point}")
+
     dbutils.fs.mount(source=f"abfss://{container}@{storage_account}.dfs.core.windows.net/",
                      mount_point=mount_point,
                      extra_configs=mount_config)
