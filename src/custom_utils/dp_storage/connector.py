@@ -21,14 +21,14 @@ def _get_environment(dbutils) -> str:
     return env
 
 
-def get_mount_point_name(storage_account: str) -> str:
+def get_mount_point_name(storage_account: str, container: str) -> str:
     """Returns the mount point name for a given storage account."""
-    return f"/mnt/{storage_account}"
+    return f"/mnt/{storage_account}.{container}"
 
 
-def _is_mounted(dbutils, storage_account: str) -> bool:
+def _is_mounted(dbutils, storage_account: str, container: str) -> bool:
     """Checks whether the storage account is mounted"""
-    mount_point = get_mount_point_name(storage_account)
+    mount_point = get_mount_point_name(storage_account, container)
     return any(mount.mountPoint == mount_point for mount in dbutils.fs.mounts())
 
 
@@ -62,7 +62,7 @@ def _do_mount(dbutils, storage_account: str, container: str) -> str:
     _check_account_or_container_name(container)
 
     mount_config = _get_mount_config(dbutils)
-    mount_point = get_mount_point_name(storage_account)
+    mount_point = get_mount_point_name(storage_account, container)
 
     dbutils.fs.mount(source=f"abfss://{container}@{storage_account}.dfs.core.windows.net/",
                      mount_point=mount_point,
@@ -83,7 +83,7 @@ def _mount_all_containers(dbutils, containers_to_mount: List[tuple]):
     """"Mounts all containers and returns dictionary with {(<account>, <container>): <mount_points>, ...}."""
 
     for storage_account, container in containers_to_mount:
-        if _is_mounted(dbutils, storage_account):
+        if _is_mounted(dbutils, storage_account, container):
             logger.info("%s@%s is already mounted", container, storage_account)
         else:
             logger.info("Mounting %s@%s", container, storage_account)
