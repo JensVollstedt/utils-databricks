@@ -11,7 +11,7 @@ def get_dataset_path(data_config: dict) -> str:
     :param data_config: Format: {"type": "adls", "dataset": "<dataset_name>", "container": "<container>",
                                  "account": "<storage_account>"}
     """
-    mount_point = get_mount_point_name(data_config["account"])
+    mount_point = get_mount_point_name(data_config["account"], data_config["container"])
     dataset_path = f'{mount_point}/{data_config["dataset"]}'
     return dataset_path
 
@@ -28,7 +28,7 @@ def get_path_to_triggering_file(folder_path: str, filename: str, config_for_trig
     verify_source_path_and_source_config(folder_path, config_for_triggered_dataset)
 
     directory = '/'.join(folder_path.split('/')[1:])  # Remember that folderPath from an ADF trigger has the format "<container>/<directory>"
-    mount_point = get_mount_point_name(config_for_triggered_dataset['account'])
+    mount_point = get_mount_point_name(config_for_triggered_dataset['account'], config_for_triggered_dataset['container'])
 
     file_path = os.path.join(mount_point, directory, filename)
 
