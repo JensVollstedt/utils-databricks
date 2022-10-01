@@ -23,7 +23,7 @@ def _get_environment(dbutils) -> str:
 
 def get_mount_point_name(storage_account: str, container: str) -> str:
     """Returns the mount point name for a given storage account."""
-    return f"/mnt/{storage_account}.{container}"
+    return f"/mnt/{storage_account}_{container}"
 
 
 def _is_mounted(dbutils, storage_account: str, container: str) -> bool:
